@@ -1,11 +1,17 @@
 import useSWRImmutable from "swr/immutable";
 import { User } from "../types";
 
+type Error = { statusCode: number; message: string };
+
 export const useUserList = () => {
-  const { data, error, mutate } = useSWRImmutable<User[]>("user");
-  const loading = !error && !data;
+  const response = useSWRImmutable<User[]>("user");
+  const loading = !response.error && !response.data;
   return {
-    users: data || [],
+    users: response.data || [],
     loading,
+    error:
+      response.error ||
+      // @ts-ignore
+      (response.data?.statusCode === 401 && response.data?.message),
   };
 };

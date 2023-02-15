@@ -3,8 +3,9 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { SWRConfig } from "swr";
 import App from "./App";
+import { baseUrl } from "./config";
 import "./index.css";
-import { Auth } from "./pages/auth";
+import { Auth, Register } from "./pages/auth";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Auth />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   },
 ]);
 
@@ -29,5 +34,3 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     </SWRConfig>
   </React.StrictMode>
 );
-
-const baseUrl = "https://newsmithdungeon-be-eight.vercel.app";
