@@ -4,6 +4,12 @@ export type User = {
   email: string;
 };
 
+export type ServerError = {
+  error: string;
+  message: string;
+  statusCode: number;
+};
+
 export type Character = {
   userId: User["id"];
   name: string;

@@ -6,19 +6,26 @@ import App from "./App";
 import { baseUrl } from "./config";
 import "./index.css";
 import { Auth, Register } from "./pages/auth";
+import { UserList } from "./pages/user-list";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-  },
-  {
-    path: "/login",
-    element: <Auth />,
-  },
-  {
-    path: "/register",
-    element: <Register />,
+    children: [
+      {
+        path: "/users",
+        element: <UserList />,
+      },
+      {
+        path: "/login",
+        element: <Auth />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
+      },
+    ],
   },
 ]);
 

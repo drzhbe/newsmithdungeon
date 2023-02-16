@@ -1,17 +1,12 @@
 import useSWRImmutable from "swr/immutable";
-import { User } from "../types";
-
-type Error = { statusCode: number; message: string };
+import { isErrorResponse } from "../typeguards";
+import { ServerError, User } from "../types";
 
 export const useUserList = () => {
-  const response = useSWRImmutable<User[]>("user");
+  const response = useSWRImmutable<User[] | ServerError>("user");
+  const { users, error } = isErrorResponse(response.data)
+    ? { users: [], error: response.data.message || response.data.error }
+    : { users: response.data || [], error: response.error };
   const loading = !response.error && !response.data;
-  return {
-    users: response.data || [],
-    loading,
-    error:
-      response.error ||
-      // @ts-ignore
-      (response.data?.statusCode === 401 && response.data?.message),
-  };
+  return { users, loading, error };
 };
