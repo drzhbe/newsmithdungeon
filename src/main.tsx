@@ -6,6 +6,7 @@ import App from "./App";
 import { baseUrl } from "./config";
 import "./index.css";
 import { Auth, Register } from "./pages/auth";
+import { Profile } from "./pages/profile";
 import { UserList } from "./pages/user-list";
 
 const router = createBrowserRouter([
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
         path: "/register",
         element: <Register />,
       },
+      {
+        path: "/profile",
+        element: <Profile />,
+      },
     ],
   },
 ]);
@@ -33,8 +38,17 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <SWRConfig
       value={{
-        fetcher: (url: string, init) =>
-          fetch(`${baseUrl}/${url}`, init).then((res) => res.json()),
+        fetcher: (url: string, init) => {
+          const token = localStorage.getItem("token");
+          const headers = init?.headers || {};
+          if (token) {
+            headers["Authorization"] = `Bearer ${token}`;
+          }
+          return fetch(`${baseUrl}/${url}`, {
+            ...init,
+            headers,
+          }).then((res) => res.json());
+        },
       }}
     >
       <RouterProvider router={router} />
